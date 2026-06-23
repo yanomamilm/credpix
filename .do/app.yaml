@@ -1,0 +1,22 @@
+# Spec do DigitalOcean App Platform para o site credpix.
+# Buildpack PHP (Apache + PHP-FPM) — sem Docker.
+# Deploy automático a cada push na branch main.
+name: credpix
+region: nyc
+services:
+  - name: web
+    # Buildpack PHP nativo do App Platform.
+    environment_slug: php
+    source_dir: /
+    github:
+      repo: yanomamilm/credpix
+      branch: main
+      deploy_on_push: true
+    instance_count: 1
+    # Menor instância (~US$5/mês). Suba de tamanho se precisar.
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    routes:
+      - path: /
+    # /b/ é a landing do funil e responde 200 — bom alvo de health check.
+    health_check:
+      http_path: /b/
