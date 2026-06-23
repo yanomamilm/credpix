@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR" style="background:transparent;margin:0;padding:0">
+<head><!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-59CWZV26');</script>
+<!-- End Google Tag Manager -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: transparent !important;
+      margin: 0;
+      padding: 0;
+      border: none;
+      outline: none;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+      aspect-ratio: 85.6 / 53.98;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%, rgba(0,0,0,0.1) 100%),
+        linear-gradient(135deg, #b8860b 0%, #ffd700 40%, #daa520 60%, #b8860b 100%);
+      border-radius: 16px;
+      border: none;
+      padding: 14px 18px;
+      position: relative;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      animation: slideUp 0.5s ease-out forwards;
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      top: -40px; right: -20px;
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .logo { height: 24px; object-fit: contain; }
+    .logo-fallback { display: none; font-size: 11px; font-weight: 800; color: #7a5c00; letter-spacing: 1px; }
+    .gold { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 14px; color: #7a5c00; letter-spacing: 3px; }
+    .mid { display: flex; align-items: center; }
+    .chip { height: 28px; object-fit: contain; }
+    .bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+    .holder-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: #4a3800;
+      letter-spacing: 1.5px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .holder-label { font-family: 'Inter', sans-serif; font-size: 8px; color: #7a5c00; letter-spacing: 1px; margin-top: 3px; }
+    .visa-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .visa { height: 40px; object-fit: contain; display: block; }
+    .credito { font-family: 'Inter', sans-serif; font-size: 9px; color: #7a5c00; letter-spacing: 1px; line-height: 1; }
+  </style>
+</head>
+<body style="background:transparent;margin:0;padding:0;">
+  <div class="card">
+    <div class="top">
+      <img src="../irudiak/logo.png" class="logo" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <span class="logo-fallback">CredPix</span>
+      <span class="gold">GOLD</span>
+    </div>
+    <div class="mid">
+      <img src="../irudiak/chip.png" class="chip" alt="" />
+    </div>
+    <div class="bottom">
+      <div style="min-width:0;flex:1;margin-right:8px;">
+        <div class="holder-name" id="holder-name">TITULAR DO CARTAO</div>
+        <div class="holder-label">TITULAR DO CARTAO</div>
+      </div>
+      <div class="visa-wrap">
+        <img src="../irudiak/visa.png" class="visa" alt="" />
+        <div class="credito">CREDITO</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const nomeCompleto = localStorage.getItem('nomeUsuario') || '';
+    const partesNome = nomeCompleto.trim().split(' ');
+    const nomeExibido = partesNome.slice(0, 2).join(' ');
+    if (nomeExibido) document.getElementById('holder-name').textContent = nomeExibido.toUpperCase();
+  </script><!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59CWZV26"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+</body>
+</html>

